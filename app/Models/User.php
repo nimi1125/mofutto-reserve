@@ -45,4 +45,19 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+    
+    public function role()
+    {
+        return $this->belongsTo(UserRole::class);
+    }
+
+    public function plushie()
+    {
+        return $this->hasMany(\App\Models\Plushie::class);
+    }
+
+    public function reservation()
+    {
+        return $this->hasMany(\App\Models\Reservation::class);
+    }
 }

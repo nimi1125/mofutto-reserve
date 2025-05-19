@@ -1,3 +1,67 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+.zenMaru {
+    font-family: "Zen Maru Gothic", serif;
+    font-style: normal;
+}
+
+.notoSansJp {
+    font-family: "Noto Sans JP", sans-serif;
+    font-optical-sizing: auto;
+    font-style: normal;
+}
+
+body{
+    color: #464646;
+    font-family: "Noto Sans JP", sans-serif;
+    font-weight: normal;
+}
+
+.h1Tit{
+    font-size: 2.3rem;
+    font-weight: bold;
+}
+
+.h2Tit{
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.h3Tit{
+    font-size: 1.7rem;
+    font-weight: 500;
+}
+
+.bgCol01{
+    background-color: #B7EBD9;
+}
+
+.bgCol02{
+    background-color: #49d4a3;
+}
+
+.borderCol01{
+    border-color:#B7EBD9;
+}
+
+.btn01{
+    background-color: #49d4a3;
+    border-radius: 1.2rem;
+    color: #fff;
+    padding: 0.5rem 0.7rem;
+    display: block;
+    max-width: 20rem;
+    margin: auto;
+    text-align: center;
+    font-weight: 700;
+    font-size: 1.2rem;
+}
+
+.calendarBox .react-calendar{
+    width: 100%;
+    border: none;
+    line-height: normal;
+}

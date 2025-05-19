@@ -1,30 +1,35 @@
-import { forwardRef, useEffect, useImperativeHandle, useRef } from 'react';
+import React, { forwardRef, useEffect, useRef } from 'react';
 
-export default forwardRef(function TextInput(
+const TextInput = forwardRef(function TextInput(
     { type = 'text', className = '', isFocused = false, ...props },
-    ref,
+    ref
 ) {
-    const localRef = useRef(null);
-
-    useImperativeHandle(ref, () => ({
-        focus: () => localRef.current?.focus(),
-    }));
+    const inputRef = useRef();
 
     useEffect(() => {
         if (isFocused) {
-            localRef.current?.focus();
+            inputRef.current?.focus();
         }
     }, [isFocused]);
 
     return (
         <input
-            {...props}
             type={type}
             className={
-                'rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 ' +
+                'rounded-2xl border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500 ' +
                 className
             }
-            ref={localRef}
+            ref={(el) => {
+                inputRef.current = el;
+                if (typeof ref === 'function') {
+                    ref(el);
+                } else if (ref) {
+                    ref.current = el;
+                }
+            }}
+            {...props} 
         />
     );
 });
+
+export default TextInput;
