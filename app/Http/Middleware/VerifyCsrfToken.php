@@ -8,6 +8,6 @@ class VerifyCsrfToken extends Middleware
 {
     // デバッグ用に特定ルートだけCSRFチェックを除外
     protected $except = [
-        'login',
+        // 'login',
     ];
 }

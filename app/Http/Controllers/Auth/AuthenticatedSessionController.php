@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Inertia\Response;
+use Illuminate\Validation\ValidationException;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -24,45 +25,32 @@ class AuthenticatedSessionController extends Controller
             'status' => session('status'),
         ]);
     }
-
+    
     /**
      * Handle an incoming authentication request.
      */
-
-     public function store(LoginRequest $request): RedirectResponse
-     {
-         $request->authenticate();
- 
-         $request->session()->regenerate();
- 
-         return redirect()->intended(route('mypage', absolute: false));
-     }
-    // public function store(LoginRequest $request): RedirectResponse
-    // {
-    //     $credentials = $request->only('email', 'password');
     
-    //     if (Auth::guard('web')->attempt($credentials, $request->boolean('remember'))) {
-    //         $user = Auth::guard('web')->user();
+    public function store(LoginRequest $request)
+    {
+        $credentials = $request->only('email', 'password');
     
-    //         // ここでrole_idの判定（例: 一般ユーザーは role_id が 1 のみ許可）
-    //         if ($user->role_id !== 1) {
-    //             Auth::guard('web')->logout();
+        if (Auth::guard('web')->attempt($credentials)) {
+            $user = Auth::guard('web')->user();
     
-    //             return redirect()->route('login')->withErrors([
-    //                 'email' => '一般ユーザー権限がありません。',
-    //             ]);
-    //         }
+            if ($user->role_id !== 1) { // 一般ユーザー用
+                Auth::guard('web')->logout();
+                return redirect()->route('login')->withErrors(['email' => '一般ユーザーではありません']);
+            }
     
-    //         $request->session()->regenerate();
+            $request->session()->regenerate();
+            return redirect()->intended(route('mypage'));
+        }
     
-    //         return redirect()->intended(route('mypage'));
-    //     }
+        throw ValidationException::withMessages([
+            'email' => __('auth.failed'),
+        ]);
+    }
     
-    //     // 認証失敗時
-    //     return back()->withErrors([
-    //         'email' => __('auth.failed'),
-    //     ])->onlyInput('email');
-    // }
 
     /**
      * Destroy an authenticated session.

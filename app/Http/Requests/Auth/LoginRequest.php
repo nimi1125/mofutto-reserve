@@ -43,12 +43,16 @@ class LoginRequest extends FormRequest
     
         $credentials = $this->only('email', 'password');
     
-        $guard = $this->input('type') === 'admin' ? 'admin' : 'web';
+        $guard = request()->is('admin/*') ? 'admin' : 'web';
+    
+        \Log::info("Guard used: $guard");
+        \Log::info("Credentials", $credentials);
     
         // attempt の結果をログ出力
         $attempted = Auth::guard($guard)->attempt($credentials, $this->boolean('remember'));
-            
-        if (! Auth::guard($guard)->attempt($credentials, $this->boolean('remember'))) {
+        \Log::info("Auth attempt result: " . ($attempted ? 'success' : 'fail'));
+    
+        if (! $attempted) {
             RateLimiter::hit($this->throttleKey());
     
             throw ValidationException::withMessages([

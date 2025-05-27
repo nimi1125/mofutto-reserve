@@ -13,7 +13,7 @@ use Inertia\Inertia;
 // ユーザーページ
 
 Route::get('/', [HomeController::class, 'index'],function () {
-    return Inertia::render('Welcome', [
+    return Inertia::render('User/Mypage', [
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
         'laravelVersion' => Application::VERSION,
@@ -22,7 +22,7 @@ Route::get('/', [HomeController::class, 'index'],function () {
 });
 
 Route::get('/mypage', function () {
-    return Inertia::render('Mypage');
+    return Inertia::render('User/Mypage');
 })->middleware(['auth', 'verified'])->name('mypage');
 
 Route::get('/reserve/course', [CourseController::class, 'index'])

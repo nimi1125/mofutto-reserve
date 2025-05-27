@@ -4,7 +4,7 @@ import RoundedEmeraldBtn from '@/Components/RoundedEmeraldBtn'
 import { route } from 'ziggy-js';
 
 export default function TopCourseLayout() {
-    const { courses } = usePage().props;
+    const { courses = [] } = usePage().props;
 
     return (
         <ul className="grid grid-cols-2 gap-4 mb-8">
