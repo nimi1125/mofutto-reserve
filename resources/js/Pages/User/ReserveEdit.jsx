@@ -36,7 +36,7 @@ export default function ReserveEdit() {
 
     return (
         <AuthenticatedLayout>
-            <Head title="予約情報の変更" />
+            <Head title="予約情報の変更"/>
             <div className="pt-0 py-12">
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
                     <div className='flex gap-2'>

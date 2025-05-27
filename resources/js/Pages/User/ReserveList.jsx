@@ -1,17 +1,18 @@
-import { usePage, Link } from '@inertiajs/react';
+import { Head, usePage, Link } from '@inertiajs/react';
 import { router } from '@inertiajs/core';
 import axios from 'axios';
 import { route } from 'ziggy-js';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import SidebarLayout from '@/Layouts/SidebarLayout';
-import RoundedEmeraldBtn from '@/Components/RoundedEmeraldBtn';
+import PrimaryButton from '@/Components/PrimaryButton';
+import DangerButton from '@/Components/DangerButton';
 
 export default function ReserveList() {
     const { currentReservations, pastReservations } = usePage().props;
 
     const handleDelete = (reservationId) => {
         if (confirm('本当にこの予約を削除しますか？')) {
-            router.delete(route('reserveDestroy', { reservationId: reservationId }));
+            router.delete(route('reserve.destroy', { reservationId: reservationId }));
         }
     };
 
@@ -23,6 +24,7 @@ export default function ReserveList() {
         
     return (
         <AuthenticatedLayout>
+            <Head title="予約履歴一覧"/>
             <div className="pt-0 py-12">
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
                     <div className='flex gap-2'>
@@ -34,6 +36,8 @@ export default function ReserveList() {
                             {/* ◼︎現在の予約一覧 */}
                             <section className='mb-10'>
                                 <h4 className='mb-5'>◼︎現在の予約一覧</h4>
+                                <p className='text-red-400 font-bold'>コース、予約開始日などは変更できません。そのため一度予約を削除してから、予約の取り直しをお願いします。</p>
+                                <p className='text-red-400 font-bold mb-5'>状態が治療中になっている場合は、内容を変更せず一度電話にてお問い合わせください。</p>
                                 {currentReservations.length === 0 ? (
                                     <p>現在の予約はありません。</p>
                                 ) : (
@@ -42,7 +46,7 @@ export default function ReserveList() {
                                             <div className='flex-1'>
                                                 <p>予約日：{reservation.start_date}</p>
                                                 <p>ぬいぐるみ名：{reservation.plushie?.name}</p>
-                                                <p>ぬいぐるみの状態：
+                                                <p>現在の状態：
                                                     <span className={`${statusColor[reservation.plushie?.status?.status]}`}>
                                                         {reservation.plushie?.status?.status}
                                                     </span>
@@ -54,11 +58,11 @@ export default function ReserveList() {
                                                 href={route('reserve.edit', { reservation: reservation.id })}
                                                 className='mb-2'
                                                 >
-                                                <RoundedEmeraldBtn text="変更" />
+                                                <PrimaryButton>変更</PrimaryButton>
                                             </Link>
-                                            <button onClick={() => handleDelete(reservation.id)} style={{ cursor: 'pointer' }}>
+                                            <DangerButton onClick={() => handleDelete(reservation.id)} style={{ cursor: 'pointer' }}>
                                                 削除
-                                            </button>
+                                            </DangerButton>
                                             </div>
                                         </div>
                                     ))

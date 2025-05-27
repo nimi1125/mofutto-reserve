@@ -7,7 +7,7 @@ export default function Welcome({ auth }) {
 
     return (
         <>
-            <Head title="Welcome" />
+            <Head title="トップページ" />
             <div className="h-full">
                 <header className='h-96 bgCol01 grid grid-cols-2 gap-2'>
                     <div>

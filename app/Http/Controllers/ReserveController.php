@@ -138,14 +138,14 @@ class ReserveController extends Controller
     
         if (!$reservation) {
             return redirect()
-                ->route('ReserveList')
+                ->route('reservations')
                 ->withErrors(['予約が見つかりませんでした。']);
         }
     
         $reservation->delete();
     
         return redirect()
-            ->route('ReserveList')
+            ->route('reservations')
             ->with('status', '予約を削除しました。');
     }
     

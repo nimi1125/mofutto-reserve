@@ -12,11 +12,17 @@ import { router } from '@inertiajs/react';
 export default function Reservationlist() {
     const { reservation, statuses, flash } = usePage().props;
     const [statusMap, setStatusMap] = useState({});
-    
-    console.log("FLASH", flash);
+    const [updating, setUpdating] = useState(false);
 
-    const handleBulkUpdate = () => {
-        router.post(route('admin.reservations.bulkUpdate'), { statusMap });
+    const handleBulkUpdate = async () => {
+        setUpdating(true);
+        try {
+            await router.post(route('admin.reservations.bulkUpdate'), { statusMap });
+        } catch (error) {
+            alert("更新に失敗しました");
+        } finally {
+            setUpdating(false);
+        }
     };
 
     const [message, setMessage] = useState(null);
@@ -40,7 +46,7 @@ export default function Reservationlist() {
 
     return (
         <AdminAuthenticatedLayout>
-            <Head title="Reservationlist"/>
+            <Head title="予約一覧"/>
 
             <div className="pt-0 py-12">
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
@@ -51,12 +57,12 @@ export default function Reservationlist() {
                         <div className='w-full md:w-3/4 px-4'>
                             <h3 className='h3Tit mb-5 mt-5'>予約一覧</h3>
                             <div className='mb-5'>
-                                <p>住所、コースなどは詳細ページから変更お願いします。</p>
+                                <p>住所などは詳細ページから変更お願いします。</p>
                                 <p>状態については一覧から一括変更できます。変更後、一括更新ボタンを押して変更してください。</p>
                             </div>
                             <div className='mb-5'>
-                            <PrimaryButton onClick={handleBulkUpdate}>
-                                状態を一括更新する
+                            <PrimaryButton onClick={handleBulkUpdate} disabled={updating}>
+                                {updating ? '更新中...' : '状態を一括更新する'}
                             </PrimaryButton>
                             </div>
                             {/* フラッシュメッセージ表示 */}

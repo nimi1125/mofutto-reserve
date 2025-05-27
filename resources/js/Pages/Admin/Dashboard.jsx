@@ -6,7 +6,7 @@ import { route } from 'ziggy-js';
 export default function Dashboard() {
     return (
         <AdminAuthenticatedLayout>
-            <Head title="Dashboard"/>
+            <Head title="管理画面"/>
 
             <div className="pt-0 py-12">
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">

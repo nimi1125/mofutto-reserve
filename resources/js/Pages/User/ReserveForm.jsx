@@ -46,7 +46,7 @@ export default function ReserveForm() {
             };
     return (
         <AuthenticatedLayout>
-            <Head title="ReserveCalendar"/>
+            <Head title="予約情報入力"/>
 
             <div className="pt-0 py-12">
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">

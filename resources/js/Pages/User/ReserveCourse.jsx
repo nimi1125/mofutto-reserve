@@ -6,7 +6,7 @@ import { Head } from '@inertiajs/react';
 export default function ReserveCourse() {
     return (
         <AuthenticatedLayout>
-            <Head title="ReserveCourse" />
+            <Head title="コース選択" />
 
             <div className="pt-0 py-12">
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
@@ -18,8 +18,9 @@ export default function ReserveCourse() {
                             <h3 className="h3Tit pt-5 pb-5">
                                 予約
                             </h3>
-                                <h4 className='mb-5'>◼︎コース選択</h4>
-                                <ReserveCourseLayout />
+                            <h4 className='mb-5'>◼︎コース選択</h4>
+                            <p className='mb-5'>各コースの日数は完了までの目安です。予約の混み具合やぬいぐるみの状態により日数は変動します。</p>
+                            <ReserveCourseLayout />
                         </div>
                     </div>
                 </div>
