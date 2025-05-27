@@ -13,7 +13,7 @@ export default function ReserveCourseLayout() {
                 <h3 className="text-lg font-semibold">{course.name}</h3>
                 <p>日数: {course.duration_days}日</p>
                 <p className='mb-3'>説明: {course.description}</p>
-                <Link href={route('ReserveCalendar', { courseId: course.id })}>
+                <Link href={route('reserve.calendar', { courseId: course.id })}>
                     <RoundedEmeraldBtn text="選択" />
                 </Link>
             </li>

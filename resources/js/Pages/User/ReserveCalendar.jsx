@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { usePage, router, Link } from '@inertiajs/react';
 import { route } from 'ziggy-js';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import Sidebar from '@/Components/Sidebar';
-import ReserveCalendarArea from '@/Components/ReserveCalendarArea';
+import SidebarLayout from '@/Layouts/SidebarLayout';
+import ReserveCalendarLayout from '@/Layouts/ReserveCalendarLayout';
 import RoundedEmeraldBtn from '@/Components/RoundedEmeraldBtn';
 import { Head } from '@inertiajs/react';
 
@@ -24,7 +24,7 @@ export default function ReserveCalendar() {
     // 選択した日付を YYYY-MM-DD 形式の文字列に整形
     const formattedDate = selectedDate.toLocaleDateString('en-CA', { year: 'numeric', month: '2-digit', day: '2-digit' });
 
-    router.visit(route('reserveForm', {
+    router.visit(route('reserve.form', {
       selectedDate: selectedDate,
       courseId: courseId,
     }));
@@ -37,7 +37,7 @@ export default function ReserveCalendar() {
         <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
           <div className='flex gap-2'>
             <div className='hidden md:block md:w-1/4 px-2'>
-              <Sidebar />
+              <SidebarLayout />
             </div>
             <div className='w-full md:w-3/4 px-4'>
               <h3 className="h3Tit pt-5 pb-5">予約</h3>
@@ -49,7 +49,7 @@ export default function ReserveCalendar() {
                 <p>選択中のコースID：{courseId}</p>
                 <div className='mb-5'>
                   <div className='border-2 mb-5'>
-                    <ReserveCalendarArea
+                    <ReserveCalendarLayout
                       onSelectDate={handleSelectDate}
                       calendarData={calendarData}
                     />

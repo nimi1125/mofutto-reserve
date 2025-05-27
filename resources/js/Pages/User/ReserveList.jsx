@@ -3,10 +3,10 @@ import { router } from '@inertiajs/core';
 import axios from 'axios';
 import { route } from 'ziggy-js';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import Sidebar from '@/Components/Sidebar';
+import SidebarLayout from '@/Layouts/SidebarLayout';
 import RoundedEmeraldBtn from '@/Components/RoundedEmeraldBtn';
 
-export default function ReserveHistoryList() {
+export default function ReserveList() {
     const { currentReservations, pastReservations } = usePage().props;
 
     const handleDelete = (reservationId) => {
@@ -26,7 +26,7 @@ export default function ReserveHistoryList() {
             <div className="pt-0 py-12">
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
                     <div className='flex gap-2'>
-                        <div className='hidden md:block md:w-1/4 px-2'><Sidebar /></div>
+                        <div className='hidden md:block md:w-1/4 px-2'><SidebarLayout /></div>
                         <div className='w-full md:w-3/4 px-4'>
 
                             <h3 className="h3Tit pt-5 pb-5">予約履歴一覧</h3>
@@ -51,7 +51,7 @@ export default function ReserveHistoryList() {
                                             </div>
                                             <div className='flex flex-col'>
                                             <Link
-                                                href={route('reserveEdit', { reservation: reservation.id })}
+                                                href={route('reserve.edit', { reservation: reservation.id })}
                                                 className='mb-2'
                                                 >
                                                 <RoundedEmeraldBtn text="変更" />

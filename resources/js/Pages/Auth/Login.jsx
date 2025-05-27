@@ -4,22 +4,28 @@ import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import GuestLayout from '@/Layouts/GuestLayout';
-import { Head, Link, useForm } from '@inertiajs/react';
+import { Head, Link, useForm, usePage } from '@inertiajs/react';
 
-export default function Login({ status, canResetPassword }) {
+export default function Login({ status, canResetPassword, type }) {
     const { data, setData, post, processing, errors, reset } = useForm({
         email: '',
         password: '',
         remember: false,
+        type: type,
     });
 
     const submit = (e) => {
         e.preventDefault();
+        console.log('Login type:', type); 
 
-        post(route('login'), {
+        // 送信先ルートを切り替える
+        const routeName = type === 'admin' ? 'admin.login' : 'login';
+
+        post(route(routeName), {
             onFinish: () => reset('password'),
         });
     };
+
 
     return (
         <GuestLayout>

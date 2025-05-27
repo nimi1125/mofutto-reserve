@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import Sidebar from '@/Components/Sidebar';
+import SidebarLayout from '@/Layouts/SidebarLayout';
 import { Head, usePage, router } from '@inertiajs/react';
 import { useForm } from "react-hook-form";
 import TextInput from '@/Components/TextInput';
@@ -41,7 +41,7 @@ export default function ReserveEdit() {
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
                     <div className='flex gap-2'>
                         <div className='hidden md:block md:w-1/4 px-2'>
-                            <Sidebar />
+                            <SidebarLayout />
                         </div>
                         <div className='w-full md:w-3/4 px-4'>
                             <h3 className="h3Tit pt-5 pb-5">予約情報の変更</h3>

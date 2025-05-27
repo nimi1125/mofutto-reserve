@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from '@inertiajs/react'
 
-export default function Sidebar() {
+export default function SidebarLayout() {
     return (
         <nav>
             <ul className="md:h-screen">
@@ -12,16 +12,13 @@ export default function Sidebar() {
                     
                 </li>
                 <li className="p-5 border-b-2">
-                    <Link href={route('reserveCourse')}>
+                    <Link href={route('reserve.course')}>
                         予約
                     </Link>
                 </li>
                 <li className="p-5 border-b-2">
-                    <Link href={route('reserveHistoryList')}>予約履歴一覧</Link>
+                    <Link href={route('reservations')}>予約履歴一覧</Link>
                 </li>
-                {/* <li className="p-5 border-b-2">
-                    <Link href="/status">ぬいぐるみの状態確認</Link>
-                </li> */}
             </ul>
         </nav>
     )

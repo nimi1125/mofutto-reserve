@@ -12,7 +12,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 
-class ReserveController extends Controller
+class ReserveController extends Controller 
 {
     public function showCalendar(int $courseId)
     {
@@ -40,7 +40,7 @@ class ReserveController extends Controller
             $calendarData[$date] = $status;
         }
     
-        return Inertia::render('ReserveCalendar', [
+        return Inertia::render('User/ReserveCalendar', [
             'courseId' => $course->id,
             'course' => $course,
             'calendarData' => $calendarData,
@@ -50,7 +50,7 @@ class ReserveController extends Controller
     
     public function create(Request $request)
     {
-        return Inertia::render('ReserveForm', [
+        return Inertia::render('User/ReserveForm', [
             'selectedDate' => $request->query('selectedDate'),
             'courseId' => $request->query('courseId'),
         ]);
@@ -126,7 +126,7 @@ class ReserveController extends Controller
         ->orderBy('start_date', 'desc')
         ->get();;
     
-        return Inertia::render('ReserveHistoryList', [
+        return Inertia::render('User/ReserveList', [
             'currentReservations' => $currentReservations,
             'pastReservations' => $pastReservations,
         ]);
@@ -138,14 +138,14 @@ class ReserveController extends Controller
     
         if (!$reservation) {
             return redirect()
-                ->route('reserveHistoryList')
+                ->route('ReserveList')
                 ->withErrors(['予約が見つかりませんでした。']);
         }
     
         $reservation->delete();
     
         return redirect()
-            ->route('reserveHistoryList')
+            ->route('ReserveList')
             ->with('status', '予約を削除しました。');
     }
     
@@ -153,7 +153,7 @@ class ReserveController extends Controller
     {
         $reservation->load('plushie');
 
-        return Inertia::render('ReserveEdit', [
+        return Inertia::render('User/ReserveEdit', [
             'reservation' => [
                 'id' => $reservation->id,
                 'plushie_name' => $reservation->plushie->name ?? '',
@@ -177,7 +177,7 @@ class ReserveController extends Controller
     
         $reservation->update($validated);
     
-        return redirect()->route('reserveHistoryList')->with('message', '予約情報を更新しました');
+        return redirect()->route('reservations')->with('message', '予約情報を更新しました');
     }
 
 }

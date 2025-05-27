@@ -3,17 +3,7 @@ import RoundedEmeraldBtn from '@/Components/RoundedEmeraldBtn'
 import TopCourseLayout from '@/Layouts/TopCourseLayout'
 
 
-export default function Welcome({ auth, laravelVersion, phpVersion }) {
-    const handleImageError = () => {
-        document
-            .getElementById('screenshot-container')
-            ?.classList.add('!hidden');
-        document.getElementById('docs-card')?.classList.add('!row-span-1');
-        document
-            .getElementById('docs-card-content')
-            ?.classList.add('!flex-row');
-        document.getElementById('background')?.classList.add('!hidden');
-    };
+export default function Welcome({ auth }) {
 
     return (
         <>
@@ -25,7 +15,7 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
                     </div>
                     <div>
                         <nav className="-mx-3 flex flex-1 justify-end mr-5 pt-3">
-                            <Link className='mr-2' href={route('reserveCourse')}>
+                            <Link className='mr-2' href={route('reserve.course')}>
                                 <RoundedEmeraldBtn text="予約はこちら" />
                             </Link>
                             {auth.user ? (
@@ -56,7 +46,7 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
                     </div>
                 </header>
 
-                <main class="p-8">
+                <main className="p-8">
                     <section className='bg-emerald-500 rounded-xl p-8 max-w-6xl m-auto mb-8 text-lg text-center text-white font-semibold'>
                             <p>ぬいぐるみ専門のケア予約システム「もふっと予約」へようこそ！</p>
                             <p>長年一緒に過ごしてきたぬいぐるみたちを、やさしくメンテナンスしませんか？</p>

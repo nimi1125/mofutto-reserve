@@ -1,5 +1,5 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import Sidebar from '@/Components/Sidebar'
+import SidebarLayout from '@/Layouts/SidebarLayout'
 import { Head, Link } from '@inertiajs/react';
 import { route } from 'ziggy-js';
 
@@ -12,7 +12,7 @@ export default function Mypage() {
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
                     <div className='flex flex-wrap'>
                         <div className='hidden md:block md:w-1/4 px-2'>
-                            <Sidebar />
+                            <SidebarLayout />
                         </div>
                         <div className='w-full md:w-3/4 px-4'>
                             <div className='flex flex-wrap'>
@@ -22,19 +22,14 @@ export default function Mypage() {
                                     </Link>
                                 </div>
                                 <div className='w-1/2 p-3'>
-                                    <Link href={route('reserveCourse')} className='h-48 bg-gray-100 block border-2 p-5 rounded-xl'>
+                                    <Link href={route('reserve.course')} className='h-48 bg-gray-100 block border-2 p-5 rounded-xl'>
                                         予約
                                     </Link>
                                 </div>
                                 <div className='w-1/2 p-3'>
-                                    <Link href={route('reserveHistoryList')} className='h-48 bg-gray-100 block border-2 p-5 rounded-xl'>
+                                    <Link href={route('reservations')} className='h-48 bg-gray-100 block border-2 p-5 rounded-xl'>
                                         予約履歴一覧
                                     </Link>
-                                </div>
-                                <div className='w-1/2 p-3'>
-                                    {/* <Link href={route('status')} className='h-48 bg-gray-100 block border-2 p-5 rounded-xl'>
-                                        ぬいぐるみの状態確認
-                                    </Link> */}
                                 </div>
                             </div>
                         </div>
