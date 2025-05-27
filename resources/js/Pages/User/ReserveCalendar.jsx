@@ -32,7 +32,7 @@ export default function ReserveCalendar() {
 
   return (
     <AuthenticatedLayout>
-      <Head title="ReserveCalendar"/>
+      <Head title="日付選択"/>
       <div className="pt-0 py-12">
         <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
           <div className='flex gap-2'>
@@ -43,10 +43,12 @@ export default function ReserveCalendar() {
               <h3 className="h3Tit pt-5 pb-5">予約</h3>
               <div>
                 <h4 className='mb-5'>◼︎日付選択</h4>
+                <div className='mb-5'>
                 <p>ぬいぐるみを預ける日を選択してください。</p>
-                <p className='mb-5'>※選択するのは、預け始める日（例）5/1から5/5まで預ける場合、5/1のみ選択）</p>
-                <p>選択中のコース：{course.name}</p>
-                <p>選択中のコースID：{courseId}</p>
+                <p>※選択するのは、預け始める日（例）5/1から5/5まで預ける場合、5/1のみ選択）</p>
+                <p className='mb-5'>予約の混み合いに応じて施術完了日が遅くなる可能性があります。その点ご了承ください</p>
+                <p className='font-bold'>選択中のコース：{course.name}</p>
+                </div>
                 <div className='mb-5'>
                   <div className='border-2 mb-5'>
                     <ReserveCalendarLayout
