@@ -5,22 +5,25 @@ import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
 import { Link, usePage } from '@inertiajs/react';
 import { useState } from 'react';
 
-export default function AuthenticatedLayout({ header, children }) {
-    const { auth } = usePage().props;
+export default function AdminAuthenticatedLayout({ header, children }) {
+    const admin = usePage().props?.auth?.admin;
 
-    const user = auth.type === 'admin' ? auth.admin : auth.user;
+    if (!admin) {
+        // 管理者未ログイン時は何も表示しないか、ログイン誘導
+        return <div className="p-6 text-gray-500">ログインが必要です。</div>;
+    }
 
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
         useState(false);
 
     return (
         <div className="min-h-screen">
-            <nav className="border-2 border-gray-100 bg-white">
+            <nav className="border-b-2 border-emerald-300 bg-emerald-500">
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <div className="flex h-16 justify-between">
                         <div className="flex">
                             <div className="flex shrink-0 items-center">
-                                <h1 className='h1Tit zenMaru'>もふっと予約</h1>
+                                <h1 className='h1Tit zenMaru text-white'>もふっと予約</h1>
                             </div>
                         </div>
 
@@ -31,9 +34,9 @@ export default function AuthenticatedLayout({ header, children }) {
                                         <span className="inline-flex rounded-md">
                                             <button
                                                 type="button"
-                                                className="inline-flex items-center rounded-md border border-transparent bg-white px-3 py-2 text-sm font-medium leading-4 text-gray-500 transition duration-150 ease-in-out hover:text-gray-700 focus:outline-none"
+                                                className="inline-flex items-center border-2 border-white rounded-md text-white bg-emerald-500 px-3 py-2 text-sm font-medium leading-4 transition duration-150 ease-in-out hover:text-emerald-500 hover:bg-white focus:outline-none"
                                             >
-                                                {user.name}
+                                                {admin.name}
 
                                                 <svg
                                                     className="-me-0.5 ms-2 h-4 w-4"
@@ -58,7 +61,7 @@ export default function AuthenticatedLayout({ header, children }) {
                                             アカウント情報
                                         </Dropdown.Link>
                                         <Dropdown.Link
-                                            href={route('logout')}
+                                            href={route('admin.logout')}
                                             method="post"
                                             as="button"
                                         >
@@ -69,14 +72,14 @@ export default function AuthenticatedLayout({ header, children }) {
                             </div>
                         </div>
 
-                        <div className="-me-2 flex items-center sm:hidden">
+                        <div className="-me-2 flex items-center sm:hidden ">
                             <button
                                 onClick={() =>
                                     setShowingNavigationDropdown(
                                         (previousState) => !previousState,
                                     )
                                 }
-                                className="inline-flex items-center justify-center rounded-md p-2 text-gray-400 transition duration-150 ease-in-out hover:bg-gray-100 hover:text-gray-500 focus:bg-gray-100 focus:text-gray-500 focus:outline-none"
+                                className="inline-flex items-center justify-center rounded-md p-2 text-white transition duration-150 ease-in-out hover:bg-gray-100 hover:text-gray-500 focus:bg-gray-100 focus:text-gray-500 focus:outline-none"
                             >
                                 <svg
                                     className="h-6 w-6"
@@ -120,32 +123,26 @@ export default function AuthenticatedLayout({ header, children }) {
                 >
                     <div className="space-y-1 pb-3 pt-2">
                         <ResponsiveNavLink
-                            href={route('mypage')}
-                            active={route().current('mypage')}
+                            href={route('admin.dashboard')}
+                            active={route().current('admin.dashboard')}
                         >
-                            マイページ
+                            管理画面トップ
                         </ResponsiveNavLink>
                         <ResponsiveNavLink
-                            href={route('reserve.course')}
-                            active={route().current('reserve.course')}
+                            href={route('admin.dashboard')}
+                            active={route().current('admin.dashboard')}
                         >
-                            予約ページ
-                        </ResponsiveNavLink>
-                        <ResponsiveNavLink
-                            href={route('reservations')}
-                            active={route().current('reservations')}
-                        >
-                            予約履歴一覧
+                            予約一覧
                         </ResponsiveNavLink>
                     </div>
 
                     <div className="border-t border-gray-200 pb-1 pt-4">
                         <div className="px-4">
                             <div className="text-base font-medium text-gray-800">
-                                {user.name}
+                                {admin.name}
                             </div>
                             <div className="text-sm font-medium text-gray-500">
-                                {user.email}
+                                {admin.email}
                             </div>
                         </div>
 

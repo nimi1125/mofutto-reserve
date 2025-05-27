@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
@@ -13,7 +13,7 @@ use Illuminate\Validation\Rules;
 use Inertia\Inertia;
 use Inertia\Response;
 
-class RegisteredUserController extends Controller
+class AdminRegisteredUserController extends Controller
 {
     /**
      * Display the registration view.
@@ -21,7 +21,7 @@ class RegisteredUserController extends Controller
     public function create(): Response
     {
         return Inertia::render('Auth/Register', [
-            'type' => 'user',
+            'type' => 'admin',
         ]);
     }
 
@@ -37,18 +37,20 @@ class RegisteredUserController extends Controller
             'email' => 'required|string|lowercase|email|max:255|unique:'.User::class,
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
-        
 
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'role_id' => 1,
+            'role_id' => 2,
         ]);
 
         event(new Registered($user));
 
-        Auth::login($user);
-        return redirect(route('mypage', absolute: false));
+        // 管理者ガードでログイン
+        Auth::guard('admin')->login($user);
+
+        // ダッシュボードへ
+        return redirect(route('admin.dashboard', absolute: false));
     }
 }

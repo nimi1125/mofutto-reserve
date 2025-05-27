@@ -10,7 +10,7 @@ class CourseController extends Controller
     public function index()
     {
         $courses = Course::all();
-        return Inertia::render('ReserveCourse', [
+        return Inertia::render('User/ReserveCourse', [
             'courses' => $courses
         ]);
     }

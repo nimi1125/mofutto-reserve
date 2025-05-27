@@ -4,7 +4,7 @@ import RoundedEmeraldBtn from '@/Components/RoundedEmeraldBtn'
 import { route } from 'ziggy-js';
 
 export default function TopCourseLayout() {
-    const { courses } = usePage().props;
+    const { courses = [] } = usePage().props;
 
     return (
         <ul className="grid grid-cols-2 gap-4 mb-8">
@@ -15,7 +15,7 @@ export default function TopCourseLayout() {
                 </h3>
                 <p className='mb-5'> {course.description}</p>
                 <div className='text-center'>
-                <Link href={route('ReserveCalendar', { courseId: course.id })}>
+                <Link href={route('reserve.calendar', { courseId: course.id })}>
                     <RoundedEmeraldBtn text="このコースを選択して予約" />
                 </Link>
                 </div>

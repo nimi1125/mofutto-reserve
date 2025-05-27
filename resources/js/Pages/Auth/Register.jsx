@@ -5,7 +5,7 @@ import TextInput from '@/Components/TextInput';
 import GuestLayout from '@/Layouts/GuestLayout';
 import { Head, Link, useForm } from '@inertiajs/react';
 
-export default function Register() {
+export default function Register({ type = 'user' }) {
     const { data, setData, post, processing, errors, reset } = useForm({
         name: '',
         email: '',
@@ -16,14 +16,17 @@ export default function Register() {
     const submit = (e) => {
         e.preventDefault();
 
-        post(route('register'), {
+        // 送信先ルートを切り替える
+        const routeName = type === 'admin' ? 'admin.register' : 'register';
+
+        post(route(routeName), {
             onFinish: () => reset('password', 'password_confirmation'),
         });
     };
 
     return (
         <GuestLayout>
-            <Head title="Register" />
+            <Head title={type === 'admin' ? '管理者登録' : 'ユーザー登録'} />
 
             <form onSubmit={submit}>
                 <div>

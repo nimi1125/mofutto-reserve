@@ -40,17 +40,29 @@ class LoginRequest extends FormRequest
     public function authenticate(): void
     {
         $this->ensureIsNotRateLimited();
-
-        if (! Auth::attempt($this->only('email', 'password'), $this->boolean('remember'))) {
+    
+        $credentials = $this->only('email', 'password');
+    
+        $guard = request()->is('admin/*') ? 'admin' : 'web';
+    
+        \Log::info("Guard used: $guard");
+        \Log::info("Credentials", $credentials);
+    
+        // attempt の結果をログ出力
+        $attempted = Auth::guard($guard)->attempt($credentials, $this->boolean('remember'));
+        \Log::info("Auth attempt result: " . ($attempted ? 'success' : 'fail'));
+    
+        if (! $attempted) {
             RateLimiter::hit($this->throttleKey());
-
+    
             throw ValidationException::withMessages([
-                'email' => trans('auth.failed'),
+                'email' => __('auth.failed'),
             ]);
         }
-
+    
         RateLimiter::clear($this->throttleKey());
     }
+    
 
     /**
      * Ensure the login request is not rate limited.
