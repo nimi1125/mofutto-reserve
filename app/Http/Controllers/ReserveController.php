@@ -4,13 +4,13 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Course;
 use App\Models\Reservation;
-use App\Models\Plushie;
-use App\Models\PlushieStatus;
 use App\Models\ReservationDay;
 use Inertia\Inertia;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
+
 
 class ReserveController extends Controller 
 {
@@ -60,7 +60,6 @@ class ReserveController extends Controller
     {
         $user = Auth::user();
     
-        // バリデーション (変更なし)
         $validated = $request->validate([
             'plushie_name' => 'required|string|max:255',
             'postal_code' => 'required|string',
@@ -71,39 +70,47 @@ class ReserveController extends Controller
             'course_id' => 'required|exists:courses,id',
         ]);
     
-        // ぬいぐるみ登録 (変更なし)
-        $plushie = $user->plushie()->create([
-            'name' => $validated['plushie_name'],
-        ]);
+        try {
+            DB::beginTransaction();
     
-        // 予約登録
-        $startDateUTC = Carbon::parse($validated['start_date'], 'UTC')->setTimezone(config('app.timezone'));
-        $reservation = $user->reservation()->create([
-            'plushie_id' => $plushie->id,
-            'course_id' => $validated['course_id'],
-            'start_date' => $startDateUTC->toDateString(), // JST の日付を保存
-            'postal_code' => $validated['postal_code'],
-            'address_line1' => $validated['address_line1'],
-            'address_line2' => $validated['address_line2'],
-            'phone_number' => $validated['phone_number'],
-        ]);
+            // ぬいぐるみ登録
+            $plushie = $user->plushie()->create([
+                'name' => $validated['plushie_name'],
+                'status_id' => 1,
+            ]);
     
-        // カレンダー (満室チェック)
-        $course = Course::find($request->course_id);
-    
-        for ($i = 0; $i < $course->duration_days; $i++) {
-            $dateToCheck = $startDateUTC->copy()->addDays($i);
-            $reservationDay = ReservationDay::where('date', $dateToCheck->toDateString())->first();
-            $currentCount = Reservation::where('start_date', $dateToCheck->toDateString())->count();
-    
-            if ($currentCount >= $reservationDay->max_reservations) {
+            if (!$plushie) {
                 throw ValidationException::withMessages([
-                    'start_date' => "選択した日付（{$dateToCheck->toDateString()}）は満枠です。",
+                    'plushie_name' => 'ぬいぐるみの登録に失敗しました。',
                 ]);
             }
-        }
     
-        return redirect()->route('mypage')->with('success', '予約が完了しました');
+            // 予約登録
+            $reservation = $user->reservation()->create([
+                'plushie_id' => $plushie->id,
+                'course_id' => $validated['course_id'],
+                'start_date' => $validated['start_date'],
+                'postal_code' => $validated['postal_code'],
+                'address_line1' => $validated['address_line1'],
+                'address_line2' => $validated['address_line2'],
+                'phone_number' => $validated['phone_number'],
+            ]);
+    
+            if (!$reservation) {
+                throw ValidationException::withMessages([
+                    'start_date' => '予約の登録に失敗しました。',
+                ]);
+            }
+    
+            DB::commit();
+    
+            return redirect()->route('mypage')->with('success', '予約が完了しました');
+    
+        } catch (\Exception $e) {
+            DB::rollBack();
+    
+            return back()->withErrors(['error' => '登録中にエラーが発生しました: ' . $e->getMessage()]);
+        }
     }
 
     public function myReserve()

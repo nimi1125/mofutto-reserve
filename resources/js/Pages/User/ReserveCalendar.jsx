@@ -4,7 +4,7 @@ import { route } from 'ziggy-js';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import SidebarLayout from '@/Layouts/SidebarLayout';
 import ReserveCalendarLayout from '@/Layouts/ReserveCalendarLayout';
-import RoundedEmeraldBtn from '@/Components/RoundedEmeraldBtn';
+import PrimaryButton from '@/Components/PrimaryButton'
 import { Head } from '@inertiajs/react';
 
 export default function ReserveCalendar() {
@@ -56,7 +56,9 @@ export default function ReserveCalendar() {
                       calendarData={calendarData}
                     />
                   </div>
-                  <RoundedEmeraldBtn text="日付選択して次へ" onClick={goToNext} />
+                  <PrimaryButton onClick={goToNext}>
+                    日付選択して次へ
+                  </PrimaryButton>
                 </div>
               </div>
             </div>

@@ -1,6 +1,6 @@
 import React from 'react'
 import { usePage, Link } from '@inertiajs/react';
-import RoundedEmeraldBtn from '@/Components/RoundedEmeraldBtn'
+import PrimaryButton from '@/Components/PrimaryButton'
 import { route } from 'ziggy-js';
 
 export default function TopCourseLayout() {
@@ -16,7 +16,9 @@ export default function TopCourseLayout() {
                 <p className='mb-5'> {course.description}</p>
                 <div className='text-center'>
                 <Link href={route('reserve.calendar', { courseId: course.id })}>
-                    <RoundedEmeraldBtn text="このコースを選択して予約" />
+                    <PrimaryButton>
+                        このコースを選択して予約
+                    </PrimaryButton>
                 </Link>
                 </div>
             </li>

@@ -1,5 +1,6 @@
 import { Head, Link } from '@inertiajs/react';
-import RoundedEmeraldBtn from '@/Components/RoundedEmeraldBtn'
+import PrimaryButton from '@/Components/PrimaryButton'
+import SubButton from '@/Components/SubButton'
 import TopCourseLayout from '@/Layouts/TopCourseLayout'
 
 
@@ -16,29 +17,20 @@ export default function Welcome({ auth }) {
                     <div>
                         <nav className="-mx-3 flex flex-1 justify-end mr-5 pt-3">
                             <Link className='mr-2' href={route('reserve.course')}>
-                                <RoundedEmeraldBtn text="予約はこちら" />
+                                <PrimaryButton>予約はこちら</PrimaryButton>
                             </Link>
                             {auth.user ? (
-                                <Link
-                                    href={route('mypage')}
-                                    className="rounded-3xl px-3 py-2 ring-1 ring-transparent transition bg-white text-emerald-500 font-semibold"
-                                >
-                                    マイページ
+                                <Link href={route('mypage')}>
+                                    <SubButton>マイページ</SubButton>
                                 </Link>
                                 
                             ) : (
                                 <>
-                                    <Link
-                                        href={route('login')}
-                                        className="rounded-3xl px-5 py-2 mr-2 ring-1 ring-transparent transition bg-white text-emerald-500 font-semibold"
-                                    >
-                                        ログイン
+                                    <Link href={route('login')}>
+                                        <SubButton>ログイン</SubButton>
                                     </Link>
-                                    <Link
-                                        href={route('register')}
-                                        className="rounded-3xl px-5 py-2 ring-1 ring-transparent transition bg-white text-emerald-500 font-semibold"
-                                    >
-                                        新規登録
+                                    <Link href={route('register')}>
+                                        <SubButton>新規登録</SubButton>
                                     </Link>
                                 </>
                             )}

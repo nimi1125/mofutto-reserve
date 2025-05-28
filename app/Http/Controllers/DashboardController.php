@@ -84,8 +84,7 @@ class DashboardController extends Controller
         $plushie->status_id = $request->status_id;
         $plushie->save();
     
-        return redirect()->route('admin.reservations')
-        ->with('updateMessage', '予約内容を更新しました。');
+        return redirect()->route('admin.reservations')->with('updateMessage', '予約内容を更新しました。');
     }
 
     public function destroy(string $reservation)

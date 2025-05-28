@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Plushie extends Model
 {
-    protected $fillable = ['name'];
+    protected $fillable = ['name','status_id'];
 
     public function user()
     {

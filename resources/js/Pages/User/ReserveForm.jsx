@@ -61,7 +61,6 @@ export default function ReserveForm() {
                             <div className='mb-5'>
                                 <h4 className='mb-5'>◼︎予約情報入力</h4>
                                 <p>選択された日付: {formattedSelectedDate}</p>
-                                <p>選択されたコース: {courseId}</p>
                             </div>
                             <form onSubmit={handleSubmit(onSubmit)}>
                                 <div className='mb-5'>
