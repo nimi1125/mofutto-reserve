@@ -18,9 +18,12 @@ class AdminProfileController extends Controller
      */
     public function edit(Request $request): Response
     {
-        return Inertia::render('Profile/Edit', [
+        return Inertia::render('Admin/Profile/AdminEdit', [
             'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
             'status' => session('status'),
+            'auth' => [
+                'admin' => $request->user(),
+            ],
         ]);
     }
 
@@ -37,7 +40,7 @@ class AdminProfileController extends Controller
 
         $request->user()->save();
 
-        return Redirect::route('profile.edit');
+        return Redirect::route('admin.profile.edit');
     }
 
     /**
@@ -58,6 +61,6 @@ class AdminProfileController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return Redirect::to('/');
+        return Redirect::to('/admin/login');
     }
 }

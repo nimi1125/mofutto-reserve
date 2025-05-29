@@ -19,7 +19,7 @@ class AdminAuthenticatedSessionController extends Controller
      */
     public function create(): Response
     {
-        return Inertia::render('Admin/AdminLogin', [
+        return Inertia::render('Admin/Auth/AdminLogin', [
             'type' => 'admin',
             'canResetPassword' => Route::has('admin.password.request'),
             'status' => session('status'),

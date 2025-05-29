@@ -1,15 +1,17 @@
 import AdminAuthenticatedLayout from '@/Layouts/AdminAuthenticatedLayout';
-import PrimaryButton from '@/Components/PrimaryButton'
-import AdminSidebarLayout from '@/Layouts/AdminSidebarLayout'
+import PrimaryButton from '@/Components/PrimaryButton';
+import AdminSidebarLayout from '@/Layouts/AdminSidebarLayout';
 import TableHeaderCell from '@/Components/TableHeaderCell';
 import TableCell from '@/Components/TableCell';
+import Pagination from '@/Components/Pagination';
+import FlashMessage from '@/components/FlashMessage';
 import { Head, Link, usePage } from '@inertiajs/react'; 
-import { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react';
 import { route } from 'ziggy-js';
 import { router } from '@inertiajs/react';
 
 
-export default function Reservationlist() {
+export default function Reservationlist({children}) {
     const { reservation, statuses, flash } = usePage().props;
     const [statusMap, setStatusMap] = useState({});
     const [updating, setUpdating] = useState(false);
@@ -25,24 +27,6 @@ export default function Reservationlist() {
         }
     };
 
-    const [message, setMessage] = useState(null);
-
-    useEffect(() => {
-        // 初期表示時にだけ flash をセット（null で上書きしない）
-        if ((flash.updateMessage || flash.deleteMessage || flash.error) && !message) {
-            setMessage({
-                updateMessage: flash.updateMessage,
-                deleteMessage: flash.deleteMessage,
-                error: flash.error
-            });
-
-            const timer = setTimeout(() => {
-                setMessage(null);
-            }, 50000);
-
-            return () => clearTimeout(timer);
-        }
-    }, [flash, message]);
 
     return (
         <AdminAuthenticatedLayout>
@@ -66,21 +50,10 @@ export default function Reservationlist() {
                             </PrimaryButton>
                             </div>
                             {/* フラッシュメッセージ表示 */}
-                            {message?.updateMessage && (
-                                <div className="mb-4 p-3 bg-emerald-100 text-emerald-700 rounded">
-                                    {message.updateMessage}
-                                </div>
-                            )}
-                            {message?.deleteMessage && (
-                                <div className="mb-4 p-3 bg-gray-100 text-gray-700 rounded">
-                                    {message.deleteMessage}
-                                </div>
-                            )}
-                            {message?.error && (
-                                <div className="mb-4 p-3 bg-red-100 text-red-700 rounded">
-                                    {message.error}
-                                </div>
-                            )}
+                            <div>
+                                <FlashMessage />
+                                {children}
+                            </div>
                             <table className='w-full'>
                                 <thead>
                                     <tr>
@@ -90,16 +63,17 @@ export default function Reservationlist() {
                                         <TableHeaderCell>状態</TableHeaderCell>
                                         <TableHeaderCell>コース</TableHeaderCell>
                                         <TableHeaderCell>開始日</TableHeaderCell>
+                                        <TableHeaderCell>完了日</TableHeaderCell>
                                         <TableHeaderCell></TableHeaderCell>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {reservation.length === 0 ? (
+                                    {reservation.data.length === 0 ? (
                                         <tr>
-                                            <td colSpan="10" className="text-center py-4">現在の予約はありません。</td>
+                                            <td colSpan="7" className="text-center py-4">現在の予約はありません。</td>
                                         </tr>
                                     ) : (
-                                        reservation.map(reservation => (
+                                        reservation.data.map(reservation => (
                                             <tr key={reservation.id} className="even:bg-gray-50">
                                                 <TableCell>
                                                     {reservation.id}
@@ -138,6 +112,10 @@ export default function Reservationlist() {
                                                 </TableCell>
 
                                                 <TableCell>
+                                                    {reservation.completed_at}
+                                                </TableCell>
+
+                                                <TableCell>
                                                     <Link href={route('admin.reservation.show', { id: reservation.id })}>
                                                         <PrimaryButton>
                                                             詳細
@@ -149,6 +127,9 @@ export default function Reservationlist() {
                                     )}
                                 </tbody>
                             </table>
+                            {reservation.data.length > 0 && (
+                                <Pagination links={reservation.links} />
+                            )}
                         </div>
                     </div>
                 </div>

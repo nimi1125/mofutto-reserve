@@ -6,7 +6,7 @@ import TextInput from '@/Components/TextInput';
 import GuestLayout from '@/Layouts/GuestLayout';
 import { Head, Link, useForm, usePage } from '@inertiajs/react';
 
-export default function AdminLogin({ status, canResetPassword, type }) {
+export default function Login({ status, canResetPassword, type }) {
     const { data, setData, post, processing, errors, reset } = useForm({
         email: '',
         password: '',
@@ -17,19 +17,20 @@ export default function AdminLogin({ status, canResetPassword, type }) {
     const submit = (e) => {
         e.preventDefault();
     
-        post(route('admin.login'), {
-            email: data.email,
-            password: data.password,
-            remember: data.remember,
+        post('/login', {
             onFinish: () => reset('password'),
+            onError: (errors) => {
+                if (Object.keys(errors).length === 0) {
+                    alert('ログインに失敗しました。一度ページをリロードしてから再度お試しください。');
+                    console.log('419');
+                }
+            }
         });
     };
-    
-
 
     return (
         <GuestLayout>
-            <Head title="Log in" />
+            <Head title="ログイン" />
 
             {status && (
                 <div className="mb-4 text-sm font-medium text-green-600">

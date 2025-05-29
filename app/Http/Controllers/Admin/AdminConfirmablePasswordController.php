@@ -17,7 +17,7 @@ class AdminConfirmablePasswordController extends Controller
      */
     public function show(): Response
     {
-        return Inertia::render('Auth/ConfirmPassword');
+        return Inertia::render('Admin/Auth/AdminConfirmPassword');
     }
 
     /**
@@ -36,6 +36,6 @@ class AdminConfirmablePasswordController extends Controller
 
         $request->session()->put('auth.password_confirmed_at', time());
 
-        return redirect()->intended(route('mypage', absolute: false));
+        return redirect()->intended(route('admin.dashboard', absolute: false));
     }
 }

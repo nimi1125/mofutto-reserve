@@ -21,7 +21,7 @@ class AdminNewPasswordController extends Controller
      */
     public function create(Request $request): Response
     {
-        return Inertia::render('Auth/ResetPassword', [
+        return Inertia::render('Admin/Auth/AdminResetPassword', [
             'email' => $request->email,
             'token' => $request->route('token'),
         ]);
@@ -59,7 +59,7 @@ class AdminNewPasswordController extends Controller
         // the application's home authenticated view. If there is an error we can
         // redirect them back to where they came from with their error message.
         if ($status == Password::PASSWORD_RESET) {
-            return redirect()->route('login')->with('status', __($status));
+            return redirect()->route('admin.login')->with('status', __($status));
         }
 
         throw ValidationException::withMessages([

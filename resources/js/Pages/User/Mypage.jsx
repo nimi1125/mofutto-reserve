@@ -1,12 +1,13 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import SidebarLayout from '@/Layouts/SidebarLayout'
+import FlashMessage from '@/Components/FlashMessage';
 import { Head, Link } from '@inertiajs/react';
 import { route } from 'ziggy-js';
 
-export default function Mypage() {
+export default function Mypage({children}) {
     return (
         <AuthenticatedLayout>
-            <Head title="Mypage"/>
+            <Head title="マイページ"/>
 
             <div className="pt-0 py-12">
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
@@ -15,6 +16,10 @@ export default function Mypage() {
                             <SidebarLayout />
                         </div>
                         <div className='w-full md:w-3/4 px-4'>
+                            <div>
+                                <FlashMessage />
+                                {children}
+                            </div>
                             <div className='flex flex-wrap'>
                                 <div className='w-1/2 p-3'>
                                     <Link href={route('mypage')} className='h-48 bg-gray-100 block border-2 p-5 rounded-xl'>

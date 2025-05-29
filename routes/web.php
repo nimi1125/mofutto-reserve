@@ -5,12 +5,11 @@ use App\Http\Controllers\AdminProfileController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\ReserveController;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\AdminPageController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-// ユーザーページ
 
 Route::get('/', [HomeController::class, 'index'],function () {
     return Inertia::render('User/Mypage', [
@@ -50,7 +49,7 @@ Route::get('/reserve/update/{reservation}', [ReserveController::class, 'edit'])
 Route::put('/reserve/update/{reservation}', [ReserveController::class, 'update'])
     ->name('reserve.update');
 
-Route::middleware('guest:web')->group(function () {
+Route::middleware('web')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])
     ->name('profile.edit');
 
@@ -63,26 +62,24 @@ Route::middleware('guest:web')->group(function () {
 });
 
 Route::middleware('auth:admin')->group(function () {
-    Route::get('admin/dashboard', [DashboardController::class, 'index'])
+    Route::get('admin/dashboard', [AdminPageController::class, 'index'])
     ->name('admin.dashboard');
 
-    Route::get('admin/reservation/list', [DashboardController::class, 'reserveList'])
+    Route::get('admin/reservation/list', [AdminPageController::class, 'reserveList'])
     ->name('admin.reservations');
     
-    Route::post('admin/reservation/list', [DashboardController::class, 'bulkUpdate'])
+    Route::post('admin/reservation/list', [AdminPageController::class, 'bulkUpdate'])
     ->name('admin.reservations.bulkUpdate');
 
-    Route::get('admin/reservation/detail/{reservation}', [DashboardController::class, 'showReserve'])
+    Route::get('admin/reservation/detail/{reservation}', [AdminPageController::class, 'showReserve'])
     ->name('admin.reservation.show');
 
-    Route::put('admin/reservation/detail/{reservation}', [DashboardController::class, 'updateReserve'])
+    Route::put('admin/reservation/detail/{reservation}', [AdminPageController::class, 'updateReserve'])
     ->name('admin.reservation.update');
 
-    Route::delete('admin/reservation/detail/{reservation}', [DashboardController::class, 'destroy'])
+    Route::delete('admin/reservation/detail/{reservation}', [AdminPageController::class, 'destroy'])
     ->name('admin.reservation.destroy');
-});
 
-Route::middleware('auth:admin')->group(function () {
     Route::get('admin/profile', [AdminProfileController::class, 'edit'])
     ->name('admin.profile.edit');
     

@@ -8,9 +8,9 @@ use App\Models\ReservationDay;
 use Inertia\Inertia;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
-
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class ReserveController extends Controller 
 {
@@ -60,8 +60,10 @@ class ReserveController extends Controller
     {
         $user = Auth::user();
     
+        // バリデーション
         $validated = $request->validate([
             'plushie_name' => 'required|string|max:255',
+            'plushie_status' => 'nullable|exists:plushie_statuses,id',
             'postal_code' => 'required|string',
             'address_line1' => 'required|string',
             'address_line2' => 'nullable|string',
@@ -69,47 +71,64 @@ class ReserveController extends Controller
             'start_date' => 'required|date',
             'course_id' => 'required|exists:courses,id',
         ]);
-    
+        
+        DB::beginTransaction();
+        
         try {
-            DB::beginTransaction();
-    
             // ぬいぐるみ登録
             $plushie = $user->plushie()->create([
                 'name' => $validated['plushie_name'],
                 'status_id' => 1,
             ]);
+            
+            $course = Course::findOrFail($validated['course_id']);
+            $duration = $course->duration_days;
+            
+            $startDate = Carbon::parse($validated['start_date'])->setTimezone(config('app.timezone'));
+            
+            $availableDates = [];
+            $current = $startDate->copy();
+            
+            // 最大30日間の中から予約枠を探す
+            while (count($availableDates) < $duration && $current->diffInDays($startDate) < 30) {
+                $reservationDay = ReservationDay::where('date', $current->toDateString())->first();
+            
+                if ($reservationDay) {
+                    $currentCount = Reservation::where('start_date', $current->toDateString())->count();
+            
+                    if ($currentCount < $reservationDay->max_reservations) {
+                        $availableDates[] = $current->copy(); // 空いてる日を記録
+                    }
+                }
+            
+                $current->addDay(); // 次の日へ
+            }
     
-            if (!$plushie) {
+            if (count($availableDates) < $duration) {
                 throw ValidationException::withMessages([
-                    'plushie_name' => 'ぬいぐるみの登録に失敗しました。',
+                    'start_date' => '選択日から30日以内に必要な予約枠を確保できませんでした。',
                 ]);
             }
     
-            // 予約登録
+            // 予約登録（最初と最後を保存）
             $reservation = $user->reservation()->create([
                 'plushie_id' => $plushie->id,
-                'course_id' => $validated['course_id'],
-                'start_date' => $validated['start_date'],
+                'course_id' => $course->id,
+                'start_date' => $availableDates[0]->toDateString(),
+                'completed_at' => $availableDates[$duration - 1]->toDateString(),
                 'postal_code' => $validated['postal_code'],
                 'address_line1' => $validated['address_line1'],
                 'address_line2' => $validated['address_line2'],
                 'phone_number' => $validated['phone_number'],
             ]);
     
-            if (!$reservation) {
-                throw ValidationException::withMessages([
-                    'start_date' => '予約の登録に失敗しました。',
-                ]);
-            }
-    
             DB::commit();
-    
             return redirect()->route('mypage')->with('success', '予約が完了しました');
     
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             DB::rollBack();
-    
-            return back()->withErrors(['error' => '登録中にエラーが発生しました: ' . $e->getMessage()]);
+            Log::error('予約処理中にエラー: ' . $e->getMessage());
+            return back()->withErrors(['error' => '予約処理中に問題が発生しました。']);
         }
     }
 
@@ -123,7 +142,7 @@ class ReserveController extends Controller
             $query->where('status', '!=', '完了');
         })
         ->orderBy('start_date')
-        ->get();
+        ->paginate(10);
     
     $pastReservations = Reservation::with(['plushie.status', 'course'])
         ->where('user_id', $userId)
@@ -131,7 +150,7 @@ class ReserveController extends Controller
             $query->where('status', '完了');
         })
         ->orderBy('start_date', 'desc')
-        ->get();;
+        ->paginate(10);
     
         return Inertia::render('User/ReserveList', [
             'currentReservations' => $currentReservations,
@@ -153,7 +172,7 @@ class ReserveController extends Controller
     
         return redirect()
             ->route('reservations')
-            ->with('status', '予約を削除しました。');
+            ->with('deleteMessage', '予約を削除しました。');
     }
     
     public function edit(Reservation $reservation)

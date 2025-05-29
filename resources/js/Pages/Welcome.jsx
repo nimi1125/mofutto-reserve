@@ -10,33 +10,31 @@ export default function Welcome({ auth }) {
         <>
             <Head title="トップページ" />
             <div className="h-full">
-                <header className='h-96 bgCol01 grid grid-cols-2 gap-2'>
-                    <div>
-                        <h1 className='h1Tit zenMaru ml-5 pt-3'>もふっと予約</h1>
-                    </div>
-                    <div>
-                        <nav className="-mx-3 flex flex-1 justify-end mr-5 pt-3">
-                            <Link className='mr-2' href={route('reserve.course')}>
-                                <PrimaryButton>予約はこちら</PrimaryButton>
+            <header className="h-96 bgCol01 p-5">
+                <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                    <h1 className="h1Tit zenMaru">もふっと予約</h1>
+                    <nav className="flex flex-col md:flex-row items-start md:items-center gap-2">
+                        <Link href={route('reserve.course')}>
+                            <PrimaryButton>予約はこちら</PrimaryButton>
+                        </Link>
+
+                        {auth.user ? (
+                            <Link href={route('mypage')}>
+                                <SubButton>マイページ</SubButton>
                             </Link>
-                            {auth.user ? (
-                                <Link href={route('mypage')}>
-                                    <SubButton>マイページ</SubButton>
+                        ) : (
+                            <>
+                                <Link href="/login">
+                                    <SubButton>ログイン</SubButton>
                                 </Link>
-                                
-                            ) : (
-                                <>
-                                    <Link href={route('login')}>
-                                        <SubButton>ログイン</SubButton>
-                                    </Link>
-                                    <Link href={route('register')}>
-                                        <SubButton>新規登録</SubButton>
-                                    </Link>
-                                </>
-                            )}
-                        </nav>
-                    </div>
-                </header>
+                                <Link href="/register">
+                                    <SubButton>新規登録</SubButton>
+                                </Link>
+                            </>
+                        )}
+                    </nav>
+                </div>
+            </header>
 
                 <main className="p-8">
                     <section className='bg-emerald-500 rounded-xl p-8 max-w-6xl m-auto mb-8 text-lg text-center text-white font-semibold'>

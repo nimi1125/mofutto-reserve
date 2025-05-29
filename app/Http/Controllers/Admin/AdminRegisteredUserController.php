@@ -20,7 +20,7 @@ class AdminRegisteredUserController extends Controller
      */
     public function create(): Response
     {
-        return Inertia::render('Auth/Register', [
+        return Inertia::render('Admin/Auth/AdminRegister', [
             'type' => 'admin',
         ]);
     }

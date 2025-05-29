@@ -7,10 +7,8 @@ import { Head, usePage, router } from '@inertiajs/react';
 import { useForm } from "react-hook-form";
 import TextInput from '@/Components/TextInput';
 
-
-
 export default function ReservationDetail() {
-    const { reservation, statuses, courses } = usePage().props;
+    const { reservation, statuses } = usePage().props;
 
     const {
         register,
@@ -18,7 +16,7 @@ export default function ReservationDetail() {
         reset,
         formState: { errors },
     } = useForm();
-    
+
     useEffect(() => {
         if (reservation) {
             reset({
@@ -27,32 +25,51 @@ export default function ReservationDetail() {
                 address_line1: reservation.address_line1 || '',
                 address_line2: reservation.address_line2 || '',
                 phone_number: reservation.phone_number || '',
-                course_id: reservation.course?.id || '',
                 status_id: reservation.plushie?.status?.id || '',
-                start_date: reservation.start_date || '',
+                completed_at: reservation.completed_at || '',
             });
         }
     }, [reservation]);
-    
+
+    // バリデーション付きのregister定義
+    const nameRequired = {
+        ...register("plushie_name", {
+            required: "ぬいぐるみのお名前は必須です",
+        }),
+    };
+    const postalCodeRequired = {
+        ...register("postal_code", {
+            required: "郵便番号は必須です",
+        }),
+    };
+    const addressLine1Required = {
+        ...register("address_line1", {
+            required: "住所1は必須です",
+        }),
+    };
+    const phoneNumberRequired = {
+        ...register("phone_number", {
+            required: "電話番号は必須です",
+        }),
+    };
+
     const onSubmit = (data) => {
         router.put(route('admin.reservation.update', { reservation: reservation.id }), data, {
             onSuccess: () => {
-                router.visit(route('admin.reservations'),{
-                    replace: true
-                }
-            ); 
-                
+                router.visit(route('admin.reservations'), {
+                    replace: true,
+                });
             }
         });
     };
+
     const handleDelete = (reservationId) => {
         if (confirm('本当にこの予約を削除しますか？')) {
             router.delete(route('admin.reservation.destroy', { reservation: reservationId }), {
                 onSuccess: () => {
-                    router.visit(route('admin.reservations'),{
-                        replace: true
-                    });
-                }
+                    // 削除後リダイレクトが安定しないため
+                    window.location.href = '/admin/reservation/list';
+                },
             });
         }
     };
@@ -72,47 +89,50 @@ export default function ReservationDetail() {
                                 <div className='mb-5'>
                                     <p>予約者名：{reservation.user?.name}</p>
                                 </div>
+
                                 <div className='mb-5'>
                                     <label htmlFor="plushie_name">ぬいぐるみ名</label>
-                                    <TextInput id="plushie_name" {...register("plushie_name", { required: "必須項目です" })} className='w-full' />
+                                    <TextInput id="plushie_name" {...nameRequired} className='w-full' />
                                     {errors.plushie_name && <p className="text-red-500">{errors.plushie_name.message}</p>}
                                 </div>
+
                                 <div className='mb-5'>
                                     <label htmlFor="status_id">ぬいぐるみの状態</label>
-                                    <select {...register("status_id")} defaultValue={reservation.plushie?.status?.id} className="w-full rounded-2xl border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500">
+                                    <select {...register("status_id")} className="w-full rounded-2xl border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500">
                                         {statuses.map(status => (
                                             <option key={status.id} value={status.id}>{status.status}</option>
                                         ))}
                                     </select>
                                 </div>
-                                <div className='mb-5'>
-                                    <label htmlFor="course_id">コース</label>
-                                    <select {...register("course_id")} defaultValue={reservation.course?.id} className="w-full rounded-2xl border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500">
-                                        {courses.map(course => (
-                                            <option key={course.id} value={course.id}>{course.name}</option>
-                                        ))}
-                                    </select>
-                                </div>
-                                <div className='mb-5'>
-                                    <label htmlFor="start_date">予約開始日</label>
-                                    <input type='date' {...register("start_date")} defaultValue={reservation.start_date} className="w-full rounded-2xl border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500"></input>
-                                </div>
+
                                 <div className='mb-5'>
                                     <label htmlFor="postal_code">郵便番号</label>
-                                    <TextInput id="postal_code" {...register("postal_code", { required: "必須項目です" })} className='w-full' />
+                                    <TextInput id="postal_code" {...postalCodeRequired} className='w-full' />
+                                    {errors.postal_code && <p className="text-red-500">{errors.postal_code.message}</p>}
                                 </div>
+
                                 <div className='mb-5'>
-                                    <label htmlFor="address_line1">住所1</label>
-                                    <TextInput id="address_line1" {...register("address_line1", { required: "必須項目です" })} className='w-full' />
+                                    <label htmlFor="address_line1">住所1（都道府県〜番地）</label>
+                                    <TextInput id="address_line1" {...addressLine1Required} className='w-full' />
+                                    {errors.address_line1 && <p className="text-red-500">{errors.address_line1.message}</p>}
                                 </div>
+
                                 <div className='mb-5'>
-                                    <label htmlFor="address_line2">住所2</label>
+                                    <label htmlFor="address_line2">住所2（建物名・部屋番号など（任意））</label>
                                     <TextInput id="address_line2" {...register("address_line2")} className='w-full' />
                                 </div>
+
                                 <div className='mb-5'>
                                     <label htmlFor="phone_number">電話番号</label>
-                                    <TextInput id="phone_number" {...register("phone_number")} className='w-full' />
+                                    <TextInput id="phone_number" {...phoneNumberRequired} className='w-full' />
+                                    {errors.phone_number && <p className="text-red-500">{errors.phone_number.message}</p>}
                                 </div>
+
+                                <div className='mb-5'>
+                                    <label htmlFor="completed_at">完了日</label>
+                                    <input type='date' {...register("completed_at")} defaultValue={reservation.completed_at} className="w-full rounded-2xl border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500"></input>
+                                </div>
+
                                 <PrimaryButton type="submit">内容を更新</PrimaryButton>
                                 <DangerButton className="ml-2" onClick={() => handleDelete(reservation.id)} style={{ cursor: 'pointer' }}>
                                     予約を削除
@@ -125,5 +145,3 @@ export default function ReservationDetail() {
         </AdminAuthenticatedLayout>
     );
 }
-
-

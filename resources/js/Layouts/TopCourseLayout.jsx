@@ -7,7 +7,7 @@ export default function TopCourseLayout() {
     const { courses = [] } = usePage().props;
 
     return (
-        <ul className="grid grid-cols-2 gap-4 mb-8">
+        <ul className="grid md:grid-cols-2 gap-4 mb-8">
         {courses.map(course => (
             <li  key={course.id}  className='border-emerald-100 border-4 rounded-xl p-8'>
                 <h3 className='h3Tit zenMaru text-center mb-5'>

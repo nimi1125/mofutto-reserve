@@ -1,0 +1,39 @@
+import AdminAuthenticatedLayout from '@/Layouts/AdminAuthenticatedLayout';
+import { Head } from '@inertiajs/react';
+import DeleteUserForm from './Partials/DeleteUserForm';
+import UpdatePasswordForm from './Partials/UpdatePasswordForm';
+import UpdateProfileInformationForm from './Partials/UpdateProfileInformationForm';
+
+export default function AdminEdit({ mustVerifyEmail, status }) {
+    return (
+        <AdminAuthenticatedLayout
+            header={
+                <h2 className="text-xl font-semibold leading-tight text-gray-800">
+                    アカウント情報
+                </h2>
+            }
+        >
+            <Head title="アカウント情報(管理者)" />
+
+            <div className="py-12">
+                <div className="mx-auto max-w-7xl space-y-6 sm:px-6 lg:px-8">
+                    <div className="bg-white p-4 border-2 border-emerald-400 sm:rounded-lg sm:p-8">
+                        <UpdateProfileInformationForm
+                            mustVerifyEmail={mustVerifyEmail}
+                            status={status}
+                            className="max-w-xl"
+                        />
+                    </div>
+
+                    <div className="bg-white p-4 border-2 border-emerald-400 sm:rounded-lg sm:p-8">
+                        <UpdatePasswordForm className="max-w-xl" />
+                    </div>
+
+                    <div className="bg-white p-4 border-2 border-emerald-400 sm:rounded-lg sm:p-8">
+                        <DeleteUserForm className="max-w-xl" />
+                    </div>
+                </div>
+            </div>
+        </AdminAuthenticatedLayout>
+    );
+}

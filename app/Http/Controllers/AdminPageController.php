@@ -4,15 +4,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Course;
 use App\Models\Reservation;
-use App\Models\Plushie;
 use App\Models\PlushieStatus;
-use App\Models\ReservationDay;
 use Inertia\Inertia;
-use Carbon\Carbon;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Validation\ValidationException;
 
-class DashboardController extends Controller
+class AdminPageController extends Controller
 {
     public function index() {
         // 管理者ダッシュボード画面
@@ -21,7 +16,9 @@ class DashboardController extends Controller
 
     public function reserveList() {
         // 予約の一覧表示
-        $reservation = Reservation::with(['plushie.status', 'course', 'user'])->get();
+        $reservation = Reservation::with(['plushie.status', 'course', 'user'])
+        ->orderBy('start_date', 'asc')
+        ->paginate(20);
         $statuses = PlushieStatus::all();
         $courses = Course::all();
 
@@ -66,7 +63,6 @@ class DashboardController extends Controller
             'address_line1' => 'required|string|max:255',
             'address_line2' => 'nullable|string|max:255',
             'phone_number' => 'required|string|max:20',
-            'course_id' => 'required|exists:courses,id',
             'status_id' => 'required|exists:plushie_statuses,id',
         ]);
     
@@ -75,8 +71,7 @@ class DashboardController extends Controller
         $reservation->address_line1 = $request->address_line1;
         $reservation->address_line2 = $request->address_line2;
         $reservation->phone_number = $request->phone_number;
-        $reservation->course_id = $request->course_id;
-        $reservation->start_date = $request->start_date;
+        $reservation->completed_at = $request->completed_at;
         $reservation->save();
     
         $plushie = $reservation->plushie;

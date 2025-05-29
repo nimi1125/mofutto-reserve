@@ -1,17 +1,31 @@
-import ApplicationLogo from '@/Components/ApplicationLogo';
 import Dropdown from '@/Components/Dropdown';
-import NavLink from '@/Components/NavLink';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
-import { Link, usePage } from '@inertiajs/react';
+import { usePage, Link } from '@inertiajs/react';
 import { useState } from 'react';
+import axios from 'axios';
+
 
 export default function AuthenticatedLayout({ header, children }) {
     const { auth } = usePage().props;
 
-    const user = auth.type === 'admin' ? auth.admin : auth.user;
+    const user = usePage().props?.auth?.user;
 
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
         useState(false);
+
+    const handleLogout = async () => {
+        try {
+            await axios.post(route('logout'));
+            window.location.href = '/';
+        } catch (error) {
+            if (error.response?.status === 419) {
+                alert('ログアウトに失敗しました。一度ページをリロードしてから再度お試しください。');
+                console.log('419エラー');
+            } else {
+                alert('予期しないエラーが発生しました。');
+            }
+        }
+    };
 
     return (
         <div className="min-h-screen">
@@ -20,7 +34,9 @@ export default function AuthenticatedLayout({ header, children }) {
                     <div className="flex h-16 justify-between">
                         <div className="flex">
                             <div className="flex shrink-0 items-center">
-                                <h1 className='h1Tit zenMaru'>もふっと予約</h1>
+                                <Link href={route('mypage')}>
+                                    <h1 className='h1Tit zenMaru'>もふっと予約</h1>
+                                </Link>
                             </div>
                         </div>
 
@@ -150,16 +166,16 @@ export default function AuthenticatedLayout({ header, children }) {
                         </div>
 
                         <div className="mt-3 space-y-1">
-                            <ResponsiveNavLink href={route('profile.edit')}>
+                            <ResponsiveNavLink href="/profile">
                                 アカウント情報
                             </ResponsiveNavLink>
-                            <ResponsiveNavLink
-                                method="post"
-                                href={route('logout')}
-                                as="button"
+                            <button
+                                onClick={handleLogout}
+                                className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                             >
                                 ログアウト
-                            </ResponsiveNavLink>
+                            </button>
+
                         </div>
                     </div>
                 </div>
@@ -173,7 +189,9 @@ export default function AuthenticatedLayout({ header, children }) {
                 </header>
             )}
 
-            <main>{children}</main>
+            <main>
+                {children}
+            </main>
         </div>
     );
 }

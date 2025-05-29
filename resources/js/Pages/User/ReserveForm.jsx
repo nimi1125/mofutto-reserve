@@ -29,12 +29,28 @@ export default function ReserveForm() {
         const {
         register,
         handleSubmit,
+
         formState: { errors },
         } = useForm({ defaultValues });
         const nameRequired = {
-        ...register("plushie_name", {
-            required: "ぬいぐるみのお名前は必須です",
-        }),
+            ...register("plushie_name", {
+                required: "ぬいぐるみのお名前は必須です",
+            }),
+        };
+        const postalCodeRequired = {
+            ...register("postal_code", {
+                required: "郵便番号は必須です",
+            }),
+        };
+        const addressLine1Required = {
+            ...register("address_line1", {
+                required: "住所1は必須です",
+            }),
+        };
+        const phoneNumberRequired = {
+            ...register("phone_number", {
+                required: "電話番号は必須です",
+            }),
         };
         const onSubmit = (data) => {
             const payload = {
@@ -66,23 +82,26 @@ export default function ReserveForm() {
                                 <div className='mb-5'>
                                     <label className='block' htmlFor="plushie_name">ぬいぐるみのお名前</label>
                                     <TextInput className='block w-full' id="plushie_name" type="text" {...nameRequired}></TextInput>
-                                    <div>{errors.plushie_name?.message}</div>
+                                    <div className='text-red-400 mt-2'>{errors.plushie_name?.message}</div>
                                 </div>
                                 <div className='mb-5'>
                                     <label htmlFor="postal_code">郵便番号</label>
-                                    <TextInput className='block w-full' id="postal_code" type="text" {...register("postal_code", { required: "郵便番号は必須です" })}></TextInput>
+                                    <TextInput className='block w-full' id="postal_code" type="text" {...postalCodeRequired}></TextInput>
+                                    <div className='text-red-400 mt-2'>{errors.postal_code?.message}</div>
                                 </div>
                                 <div className='mb-5'>
-                                    <label htmlFor="address_line1">住所（都道府県〜市区町村）</label>
-                                    <TextInput className='block w-full' id="address_line1" type="text" {...register("address_line1", { required: "住所1は必須です" })}></TextInput>
+                                    <label htmlFor="address_line1">住所1（都道府県〜番地）</label>
+                                    <TextInput className='block w-full' id="address_line1" type="text" {...addressLine1Required}></TextInput>
+                                    <div className='text-red-400 mt-2'>{errors.address_line1?.message}</div>
                                 </div>
                                 <div className='mb-5'>
-                                    <label htmlFor="address_line2">住所（建物名・部屋番号など（任意））</label>
+                                    <label htmlFor="address_line2">住所2（建物名・部屋番号など）</label>
                                     <TextInput className='block w-full' id="address_line2" type="text" {...register("address_line2")}></TextInput>
                                 </div>
                                 <div className='mb-5'>
-                                    <label htmlFor="phone_number">電話番号（任意。配送連絡用など）</label>
-                                    <TextInput className='block w-full' id="phone_number" type="text" {...register("phone_number")}></TextInput>
+                                    <label htmlFor="phone_number">電話番号</label>
+                                    <TextInput className='block w-full' id="phone_number" type="text" {...phoneNumberRequired}></TextInput>
+                                    <div className='text-red-400 mt-2'>{errors.phone_number?.message}</div>
                                 </div>
                                 <div>
                                     <PrimaryButton type="submit">送信</PrimaryButton>

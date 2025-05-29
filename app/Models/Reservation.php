@@ -15,6 +15,7 @@ class Reservation extends Model
         'address_line1',
         'address_line2',
         'phone_number',
+        'completed_at',
     ];
     
     public function user()
