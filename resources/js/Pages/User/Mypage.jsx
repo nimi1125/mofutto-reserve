@@ -27,7 +27,7 @@ export default function Mypage({children}) {
                                     </Link>
                                 </div>
                                 <div className='w-1/2 p-3'>
-                                    <Link href={route('reserve.course')} className='h-48 bg-gray-100 block border-2 p-5 rounded-xl'>
+                                    <Link href={route('reservation.course')} className='h-48 bg-gray-100 block border-2 p-5 rounded-xl'>
                                         予約
                                     </Link>
                                 </div>

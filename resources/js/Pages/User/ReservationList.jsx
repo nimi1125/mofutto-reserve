@@ -10,12 +10,12 @@ import Pagination from '@/Components/Pagination';
 import FlashMessage from '@/components/FlashMessage';
 
 
-export default function ReserveList({children}) {
+export default function ReservationList({children}) {
     const { currentReservations, pastReservations } = usePage().props;
 
     const handleDelete = (reservationId) => {
         if (confirm('本当にこの予約を削除しますか？')) {
-            router.delete(route('reserve.destroy', { reservationId: reservationId }));
+            router.delete(route('reservation.destroy', { reservationId: reservationId }));
         }
     };
 
@@ -61,7 +61,7 @@ export default function ReserveList({children}) {
                                             </div>
                                             <div className='flex flex-col'>
                                             <Link
-                                                href={route('reserve.edit', { reservation: reservation.id })}
+                                                href={route('reservation.edit', { reservation: reservation.id })}
                                                 className='mb-2'
                                                 >
                                                 <PrimaryButton>変更</PrimaryButton>

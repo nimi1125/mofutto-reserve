@@ -12,7 +12,7 @@ export default function SidebarLayout() {
                     
                 </li>
                 <li className="p-5 border-b-2">
-                    <Link href={route('reserve.course')}>
+                    <Link href={route('reservation.course')}>
                         予約
                     </Link>
                 </li>

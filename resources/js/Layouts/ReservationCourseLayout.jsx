@@ -3,7 +3,7 @@ import { usePage, Link } from '@inertiajs/react';
 import PrimaryButton from '@/Components/PrimaryButton';
 import { route } from 'ziggy-js';
 
-export default function ReserveCourseLayout() {
+export default function ReservationCourseLayout() {
     const { courses } = usePage().props;
 
     return (
@@ -13,7 +13,7 @@ export default function ReserveCourseLayout() {
                 <h3 className="text-lg font-semibold">{course.name}</h3>
                 <p>日数: {course.duration_days}日</p>
                 <p className='mb-3'>説明: {course.description}</p>
-                <Link href={route('reserve.calendar', { courseId: course.id })}>
+                <Link href={route('reservation.calendar', { courseId: course.id })}>
                 <PrimaryButton>
                     選択
                 </PrimaryButton>

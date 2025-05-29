@@ -1,9 +1,9 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import SidebarLayout from '@/Layouts/SidebarLayout'
-import ReserveCourseLayout from '@/Layouts/ReserveCourseLayout'
+import ReservationCourseLayout from '@/Layouts/ReservationCourseLayout'
 import { Head } from '@inertiajs/react';
 
-export default function ReserveCourse() {
+export default function ReservationCourse() {
     return (
         <AuthenticatedLayout>
             <Head title="コース選択" />
@@ -20,7 +20,7 @@ export default function ReserveCourse() {
                             </h3>
                             <h4 className='mb-5'>◼︎コース選択</h4>
                             <p className='mb-5'>各コースの日数は完了までの目安です。予約の混み具合やぬいぐるみの状態により日数は変動します。</p>
-                            <ReserveCourseLayout />
+                            <ReservationCourseLayout />
                         </div>
                     </div>
                 </div>

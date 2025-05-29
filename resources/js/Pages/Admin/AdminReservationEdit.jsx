@@ -7,7 +7,7 @@ import { Head, usePage, router } from '@inertiajs/react';
 import { useForm } from "react-hook-form";
 import TextInput from '@/Components/TextInput';
 
-export default function ReservationDetail() {
+export default function AdminReservationEdit() {
     const { reservation, statuses } = usePage().props;
 
     const {

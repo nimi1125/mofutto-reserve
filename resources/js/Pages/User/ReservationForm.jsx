@@ -9,7 +9,7 @@ import TextInput from '@/Components/TextInput';
 import PrimaryButton from '@/Components/PrimaryButton';
 
 
-export default function ReserveForm() {
+export default function ReservationForm() {
     const { selectedDate, courseId } = usePage().props;
 
     // selectedDate が文字列の場合（YYYY-MM-DD 形式）、Date オブジェクトに変換

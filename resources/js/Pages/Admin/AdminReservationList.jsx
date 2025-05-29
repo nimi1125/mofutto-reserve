@@ -11,7 +11,7 @@ import { route } from 'ziggy-js';
 import { router } from '@inertiajs/react';
 
 
-export default function Reservationlist({children}) {
+export default function AdminReservationList({children}) {
     const { reservation, statuses, flash } = usePage().props;
     const [statusMap, setStatusMap] = useState({});
     const [updating, setUpdating] = useState(false);
@@ -49,7 +49,6 @@ export default function Reservationlist({children}) {
                                 {updating ? '更新中...' : '状態を一括更新する'}
                             </PrimaryButton>
                             </div>
-                            {/* フラッシュメッセージ表示 */}
                             <div>
                                 <FlashMessage />
                                 {children}

@@ -14,7 +14,7 @@ export default function Welcome({ auth }) {
                 <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                     <h1 className="h1Tit zenMaru">もふっと予約</h1>
                     <nav className="flex flex-col md:flex-row items-start md:items-center gap-2">
-                        <Link href={route('reserve.course')}>
+                        <Link href={route('reservation.course')}>
                             <PrimaryButton>予約はこちら</PrimaryButton>
                         </Link>
 

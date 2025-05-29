@@ -22,7 +22,7 @@ class AdminPageController extends Controller
         $statuses = PlushieStatus::all();
         $courses = Course::all();
 
-        return Inertia::render('Admin/ReservationList', [
+        return Inertia::render('Admin/AdminReservationList', [
             'reservation' => $reservation,
             'statuses' => $statuses,
             'courses' => $courses,
@@ -48,7 +48,7 @@ class AdminPageController extends Controller
         $courses = Course::all();
         $reservation = Reservation::with(['plushie.status', 'course', 'user'])->findOrFail($reservation);
 
-        return Inertia::render('Admin/ReservationDetail', [
+        return Inertia::render('Admin/AdminReservationEdit', [
             'reservation' => $reservation,
             'statuses' => $statuses,
             'courses' => $courses,

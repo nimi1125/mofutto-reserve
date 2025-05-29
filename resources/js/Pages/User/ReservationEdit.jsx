@@ -8,7 +8,7 @@ import PrimaryButton from '@/Components/PrimaryButton';
 
 
 
-export default function ReserveEdit() {
+export default function ReservationEdit() {
     const { reservation } = usePage().props;
 
     const {
@@ -31,7 +31,7 @@ export default function ReserveEdit() {
     }, [reservation]);
     
     const onSubmit = (data) => {
-        router.put(route('reserve.update', { reservation: reservation.id }), data);
+        router.put(route('reservation.update', { reservation: reservation.id }), data);
     };
 
     return (

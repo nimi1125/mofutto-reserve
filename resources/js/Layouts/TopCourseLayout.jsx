@@ -15,7 +15,7 @@ export default function TopCourseLayout() {
                 </h3>
                 <p className='mb-5'> {course.description}</p>
                 <div className='text-center'>
-                <Link href={route('reserve.calendar', { courseId: course.id })}>
+                <Link href={route('reservation.calendar', { courseId: course.id })}>
                     <PrimaryButton>
                         このコースを選択して予約
                     </PrimaryButton>

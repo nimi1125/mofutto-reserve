@@ -3,7 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AdminProfileController;
 use App\Http\Controllers\CourseController;
-use App\Http\Controllers\ReserveController;
+use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AdminPageController;
 use Illuminate\Foundation\Application;
@@ -24,30 +24,30 @@ Route::get('/mypage', function () {
     return Inertia::render('User/Mypage');
 })->middleware(['auth', 'verified'])->name('mypage');
 
-Route::get('/reserve/course', [CourseController::class, 'index'])
-    ->name('reserve.course');
+Route::get('/reservation/course', [CourseController::class, 'index'])
+    ->name('reservation.course');
 
-Route::get('/reserve/calendar/{courseId}', [ReserveController::class, 'showCalendar'])
+Route::get('/reservation/calendar/{courseId}', [ReservationController::class, 'showCalendar'])
     ->middleware('auth')
-    ->name('reserve.calendar');
+    ->name('reservation.calendar');
 
-Route::get('/reserve/form', [ReserveController::class, 'create'])
-    ->name('reserve.form');
+Route::get('/reservation/form', [ReservationController::class, 'create'])
+    ->name('reservation.form');
 
-Route::post('/reserve/form', [ReserveController::class, 'store'])
+Route::post('/reservation/form', [ReservationController::class, 'store'])
     ->name('reservations.store');
 
-Route::get('/reservation/list', [ReserveController::class, 'myReserve'])
+Route::get('/reservation/list', [ReservationController::class, 'myReserve'])
     ->name('reservations');
 
-Route::delete('/reservation/list/{reservationId}', [ReserveController::class, 'destroy'])
-    ->name('reserve.destroy');
+Route::delete('/reservation/list/{reservationId}', [ReservationController::class, 'destroy'])
+    ->name('reservation.destroy');
 
-Route::get('/reserve/update/{reservation}', [ReserveController::class, 'edit'])
-    ->name('reserve.edit');
+Route::get('/reservation/update/{reservation}', [ReservationController::class, 'edit'])
+    ->name('reservation.edit');
 
-Route::put('/reserve/update/{reservation}', [ReserveController::class, 'update'])
-    ->name('reserve.update');
+Route::put('/reservation/update/{reservation}', [ReservationController::class, 'update'])
+    ->name('reservation.update');
 
 Route::middleware('web')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])

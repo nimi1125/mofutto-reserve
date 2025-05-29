@@ -3,11 +3,11 @@ import { usePage, router, Link } from '@inertiajs/react';
 import { route } from 'ziggy-js';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import SidebarLayout from '@/Layouts/SidebarLayout';
-import ReserveCalendarLayout from '@/Layouts/ReserveCalendarLayout';
+import ReservationCalendarLayout from '@/Layouts/ReservationCalendarLayout';
 import PrimaryButton from '@/Components/PrimaryButton'
 import { Head } from '@inertiajs/react';
 
-export default function ReserveCalendar() {
+export default function ReservationCalendar() {
   const { courseId, course, calendarData } = usePage().props;
   const [selectedDate, setSelectedDate] = useState(null);
 
@@ -24,7 +24,7 @@ export default function ReserveCalendar() {
     // 選択した日付を YYYY-MM-DD 形式の文字列に整形
     const formattedDate = selectedDate.toLocaleDateString('en-CA', { year: 'numeric', month: '2-digit', day: '2-digit' });
 
-    router.visit(route('reserve.form', {
+    router.visit(route('reservation.form', {
       selectedDate: selectedDate,
       courseId: courseId,
     }));
@@ -51,7 +51,7 @@ export default function ReserveCalendar() {
                 </div>
                 <div className='mb-5'>
                   <div className='border-2 mb-5'>
-                    <ReserveCalendarLayout
+                    <ReservationCalendarLayout
                       onSelectDate={handleSelectDate}
                       calendarData={calendarData}
                     />

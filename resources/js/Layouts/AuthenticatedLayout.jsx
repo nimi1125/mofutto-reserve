@@ -142,8 +142,8 @@ export default function AuthenticatedLayout({ header, children }) {
                             マイページ
                         </ResponsiveNavLink>
                         <ResponsiveNavLink
-                            href={route('reserve.course')}
-                            active={route().current('reserve.course')}
+                            href={route('reservation.course')}
+                            active={route().current('reservation.course')}
                         >
                             予約ページ
                         </ResponsiveNavLink>

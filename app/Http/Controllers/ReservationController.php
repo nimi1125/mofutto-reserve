@@ -12,7 +12,7 @@ use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
-class ReserveController extends Controller 
+class ReservationController extends Controller 
 {
     public function showCalendar(int $courseId)
     {
@@ -40,7 +40,7 @@ class ReserveController extends Controller
             $calendarData[$date] = $status;
         }
     
-        return Inertia::render('User/ReserveCalendar', [
+        return Inertia::render('User/ReservationCalendar', [
             'courseId' => $course->id,
             'course' => $course,
             'calendarData' => $calendarData,
@@ -50,7 +50,7 @@ class ReserveController extends Controller
     
     public function create(Request $request)
     {
-        return Inertia::render('User/ReserveForm', [
+        return Inertia::render('User/ReservationForm', [
             'selectedDate' => $request->query('selectedDate'),
             'courseId' => $request->query('courseId'),
         ]);
@@ -152,7 +152,7 @@ class ReserveController extends Controller
         ->orderBy('start_date', 'desc')
         ->paginate(10);
     
-        return Inertia::render('User/ReserveList', [
+        return Inertia::render('User/ReservationList', [
             'currentReservations' => $currentReservations,
             'pastReservations' => $pastReservations,
         ]);
@@ -179,7 +179,7 @@ class ReserveController extends Controller
     {
         $reservation->load('plushie');
 
-        return Inertia::render('User/ReserveEdit', [
+        return Inertia::render('User/ReservationEdit', [
             'reservation' => [
                 'id' => $reservation->id,
                 'plushie_name' => $reservation->plushie->name ?? '',
