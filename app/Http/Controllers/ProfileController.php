@@ -50,6 +50,11 @@ class ProfileController extends Controller
         ]);
 
         $user = $request->user();
+    
+        foreach ($user->plushie as $plushie) {
+            $plushie->reservation()->delete(); 
+            $plushie->delete();                
+        }
 
         Auth::logout();
 

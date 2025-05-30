@@ -49,10 +49,15 @@ class AdminProfileController extends Controller
     public function destroy(Request $request): RedirectResponse
     {
         $request->validate([
-            'password' => ['required', 'current_password'],
+            'password' => ['required', 'current_password:admin'],
         ]);
 
         $user = $request->user();
+    
+        foreach ($user->plushie as $plushie) {
+            $plushie->reservation()->delete(); 
+            $plushie->delete();                
+        }
 
         Auth::logout();
 

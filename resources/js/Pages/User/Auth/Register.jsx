@@ -16,17 +16,14 @@ export default function Register({ type = 'user' }) {
     const submit = (e) => {
         e.preventDefault();
 
-        // 送信先ルートを切り替える
-        const routeName = type === 'admin' ? 'admin.register' : 'register';
-
-        post(route(routeName), {
+        post(route('register'), {
             onFinish: () => reset('password', 'password_confirmation'),
         });
     };
 
     return (
         <GuestLayout>
-            <Head title={type === 'admin' ? '管理者登録' : 'ユーザー登録'} />
+            <Head title='ユーザー登録'/>
 
             <form onSubmit={submit}>
                 <div>
